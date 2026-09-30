@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>集中力測定実験</title>
+
+    <link rel="stylesheet" href="style.css">
+
+</head>
+
+<body>
+    <!-- スタート画面 -->
+    <div id="startScreen">
+
+        <div class="startCard">
+
+            <h1>集中力測定実験</h1>
+            <h2>できるだけ速く、正確に解いてください。</h2>
+<!-- <button id="resetTestButton" type="button">
+    テスト用：進行状況をリセット
+</button> -->
+            <div id="setDisplay"></div>
+            <div id="musicDisplay"></div>
+
+            <!-- <div class="formGroup">
+
+                <label for="participantName">
+                    被験者名
+                </label>
+
+                <input
+                    id="participantName"
+                    type="text"
+                    autocomplete="off"
+                >
+
+            </div>
+
+            <div class="formGroup">
+
+                <label for="musicSelect">
+                    音楽条件
+                </label>
+
+                <select id="musicSelect">
+
+                    <option value="A">A</option>
+                    <option value="B">B</option>
+                    <option value="C">C</option>
+                    <option value="D">D</option>
+                    <option value="silence">無音</option>
+
+                </select>
+
+            </div>
+
+            <div class="formGroup">
+
+                <label for="setNumber">
+                    セット番号
+                </label>
+
+                <input
+                    id="setNumber"
+                    type="number"
+                    min="1"
+                    value="1"
+                >
+
+            </div> -->
+
+            <div class="formGroup">
+
+                <label for="participantID">
+                    被験者ID
+                </label>
+
+                <input
+                    id="participantID"
+                    type="text"
+                    autocomplete="off"
+                >
+
+            </div>
+
+            <button id="showMethodButton" type="button">
+                実験の実施方法を見る
+            </button>
+
+            <button id="startButton">
+
+                START
+
+            </button>
+
+            <div class="id-container">
+                <button id="copyIdButton" type="button">アンケート回答用のIDをコピーする</button>
+            </div>
+
+            <div id="conditionInfo" class="hidden">
+                現在の音楽条件：<span id="conditionText"></span>
+            </div>
+
+        </div>
+
+        <!-- 実施方法ダイアログ -->
+        <dialog id="methodDialog">
+
+        <div class="dialog-header">
+            <h2>実験の実施方法</h2>
+
+            <button
+            id="closeMethodButton"
+            class="close-button"
+            type="button"
+            aria-label="閉じる"
+            >
+            ×
+            </button>
+        </div>
+
+        <div class="dialog-content">
+
+            <ol>
+                <li>実験は、静かな場所で、座って実施してください。</li>
+                <li>このページはLINEのブラウザではなく、毎回同じブラウザを用いてください。(Chrome,Safari等)</li>
+                <li>イヤホンを装着してください。音量は80％以上で、毎回同じにしてください。</li>
+                <li>本番では50秒間、計算問題に答え続けます。</li>
+                <li>回答は左右交互に行ってください。</li>
+                <li>練習をしたことがない方は、こちらからしてください。<br><a href="https://fuchiman.github.io/demo-concentration-test/" target="_blank">https://fuchiman.github.io/demo-concentration-test/</a></li>
+                <li>実験中は音が流れます。音楽を聴きながら、普段どおり問題に答えてください。</li>
+                <li>今回は、音が流れない「無音」の条件はありません。音は毎回流れます。</li>
+                <li>実験終了後、すぐにブラウザを閉じたり、更新したりしないでください。実験結果の送信に失敗してしまうためです。</li>
+                <li>実験は、5回で1セットです。1回目が終わればページをリロードすると2回目がプレイできます。</li>
+                <li>実験と実験の合間には休憩を入れ、疲れのない状態で臨んでください。実験を1セットするのに複数日かけても構いません。</li>
+                <li>この実験では、被験者の個人名などの個人情報を収集することはありません。</li>
+            </ol>
+
+        </div>
+
+        <div class="dialog-footer">
+            <button id="closeMethodButton2" type="button">
+            閉じる
+            </button>
+        </div>
+
+        </dialog>
+
+    </div>
+
+    <!-- カウントダウン -->
+    <div id="countdown" class="hidden">
+        3
+    </div>
+
+    <!-- ゲーム画面 -->
+    <div id="gameScreen" class="hidden">
+
+        <!-- 上部情報 -->
+
+        <div id="topBar">
+
+            <div id="timer">
+                50.0
+            </div>
+
+        </div>
+
+        <!-- 左右画面 -->
+
+        <div id="container">
+
+            <!-- 左 -->
+
+            <div class="panel">
+
+                <div
+                    id="leftQuestion"
+                    class="question">
+                </div>
+
+                <button
+                    id="leftChoice0"
+                    class="choice">
+                </button>
+
+                <button
+                    id="leftChoice1"
+                    class="choice">
+                </button>
+
+                <button
+                    id="leftChoice2"
+                    class="choice">
+                </button>
+
+            </div>
+
+            <!-- 右 -->
+
+            <div class="panel">
+
+                <div
+                    id="rightQuestion"
+                    class="question">
+                </div>
+
+                <button
+                    id="rightChoice0"
+                    class="choice">
+                </button>
+
+                <button
+                    id="rightChoice1"
+                    class="choice">
+                </button>
+
+                <button
+                    id="rightChoice2"
+                    class="choice">
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- =========================================
+     送信中画面
+     ========================================= -->
+
+    <div id="uploadScreen" class="screen hidden">
+
+        <div class="uploadBox">
+
+            <div class="loadingSpinner"></div>
+
+            <h2>データを保存しています</h2>
+
+            <p>
+                送信中……
+            </p>
+
+            <p>
+                ブラウザを閉じたり、<br>
+                更新したりしないでください。
+            </p>
+
+        </div>
+
+    </div>
+
+    <!-- 終了画面 -->
+
+    <div id="resultScreen" class="hidden">
+
+        <h2>実験終了</h2>
+
+        <div id="NameAndId">
+            <!-- <h4>被験者名：
+                <span id="resultParticipantName"></span>
+            </h4> -->
+            <h4>音楽条件：
+                <span id="resultMusicId"></span>
+            </h4>
+            <h4>
+                セット番号：
+                <span id="resultSetNumber"></span>
+            </h4>
+        </div>
+
+        <div class="resultContainer">
+            
+
+            <!-- <div class="resultBox">
+
+                <h3>左画面</h3>
+
+                <p>
+                    正答数：
+                    <span id="finalLeftScore"></span>
+                    問
+                </p>
+
+                <p>
+                    平均反応時間：
+                    <span id="finalLeftReaction"></span>
+                    ms
+                </p>
+
+                <p>
+                    誤答数：
+                    <span id="finalLeftMiss"></span>
+                    回
+                </p>
+
+            </div>
+
+            
+            <div class="resultBox">
+
+                <h3>右画面</h3>
+
+                <p>
+                    正答数：
+                    <span id="finalRightScore"></span>
+                    問
+                </p>
+
+                <p>
+                    平均反応時間：
+                    <span id="finalRightReaction"></span>
+                    ms
+                </p>
+
+                <p>
+                    誤答数：
+                    <span id="finalRightMiss"></span>
+                    回
+                </p>
+
+            </div> -->
+        </div>
+
+        <p>
+
+            お疲れ様でした。<br>
+            休憩を取った後、下のボタンを押して次の実験に進んでください。<br>
+            3回で1セットなので、最低3回以上は実験してください。<br>
+            それ以上は、どれだけ実験しても構いません。<br>
+        </p>
+
+            <button id="reloadButton" type="button">
+                次の実験を開始
+            </button>
+
+        <p>
+            まだ<a href="https://docs.google.com/forms/d/e/1FAIpQLSczUERFKLxYGvbOLijRMVyVEGtbHlfkU_5POfhrGApU8mqgOQ/viewform" target="_blank">こちらのアンケート</a>に答えていない方は、お答えください。（回答に必要なIDはリロードすると入手できます）<br>
+
+        </p>
+
+        <!-- <p>
+
+            CSVを保存して下さい。
+
+        </p>
+
+        <button id="downloadCSV">
+
+            CSV保存
+
+        </button> -->
+
+    </div>
+    <button id="conditionCheckButton" type="button">
+        条件確認
+    </button>
+
+    <!-- JavaScript -->
+
+    <script src="database.js"></script>
+    <script src="builder.js"></script>
+    <script src="csv.js"></script>
+    <script src="game.js"></script>
+
+    <audio id="experimentAudio"></audio>
+
+</body>
+
+</html>
