@@ -201,34 +201,47 @@ conditionCheckButton.addEventListener("click", () => {
 
 let deviceId = localStorage.getItem("deviceId");
 
-const participantIDForm = document.getElementById('participantID');
+// const participantIDForm = document.getElementById('participantID');
 
-// function generateDeviceId() {
+function generateDeviceId() {
 
-//     const chars =
-//         "ABCDEFGHIJKLMNOPQRSTUVWXYZ" +
-//         "abcdefghijklmnopqrstuvwxyz" +
-//         "0123456789";
+    const chars =
+        "ABCDEFGHIJKLMNOPQRSTUVWXYZ" +
+        "abcdefghijklmnopqrstuvwxyz" +
+        "0123456789";
 
-//     const randomValues =
-//         new Uint32Array(16);
+    const randomValues =
+        new Uint32Array(16);
 
-//     crypto.getRandomValues(randomValues);
+    crypto.getRandomValues(randomValues);
 
-//     return Array.from(randomValues, value =>
-//         chars[value % chars.length]
-//     ).join("");
+    return Array.from(randomValues, value =>
+        chars[value % chars.length]
+    ).join("");
 
-// }
+}
+// deviceIdを持っていない場合のみ生成
+if (!deviceId) {
 
+    deviceId =
+        generateDeviceId();
+
+    localStorage.setItem(
+        "deviceId",
+        deviceId
+    );
+
+}
 const copyIdButton = document.getElementById("copyIdButton");
 
-if (deviceId) {
-    participantIDForm.value = deviceId;
-} else {
-    deviceId = '';
-    copyIdButton.classList.add("hidden");
-}
+
+
+// if (deviceId) {
+//     participantIDForm.value = deviceId;
+// } else {
+//     deviceId = '';
+//     copyIdButton.classList.add("hidden");
+// }
 
 copyIdButton.addEventListener("click", async () => {
   try {
@@ -744,7 +757,8 @@ async function finishGame() {
         uploadScreen.classList.add("hidden");
 
         alert(
-            "データの保存に失敗したか、GASから正常なレスポンスが受け取れませんでした。\n 原因は現在調査中ですが、問題ない（保存が成功している）場合が多いようなので気にせず進めてください。"
+            "データの保存に失敗しました。\n\n" +
+            "CSVを保存して、担当者に知らせてください。"
         );
 
     }
@@ -757,7 +771,7 @@ async function finishGame() {
 
 startButton.addEventListener("click", () => {
 
-    deviceId = participantIDForm.value.trim();
+    // deviceId = participantIDForm.value.trim();
 
     //musicId = document.getElementById("musicSelect").value;
 
